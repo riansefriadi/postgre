@@ -1,0 +1,91 @@
+INSTALL POSTGRE admin4
+
+sudo apt-get install curl ca-certificates gnupg
+curl https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+sudo apt-get update
+sudo apt-get install pgadmin4
+
+INSTAL POSTGRE
+A
+1.Install PostgreSQL dari default Ubuntu repositories.
+sudo apt install postgresql
+
+2.Cek apakah PostgreSQL service sudah active, running, dan enabled.
+sudo systemctl is-active postgresql
+sudo systemctl is-enabled postgresql
+sudo systemctl status postgresql	
+
+3.Cek juga apakah PostgreSQL sudah siap untuk menerima koneksi dari client.
+sudo pg_isready 
+Hasil perintah di atas.
+/var/run/postgresql:5432 - accepting connections 
+
+B. Mengakses PostgreSQL
+Proses install PostgreSQL membuat akun dengan nama postgres yang menjadi user root PostgreSQL. Untuk PostgreSQL shell menggunakan psql.
+
+Beralih ke user postgres dan login ke psql.
+
+sudo -u postgres psql 
+Hasil dari perintah di atas.
+
+psql (12.4 (Ubuntu 12.4-0ubuntu0.20.04.1))
+Type "help" for help.
+ 
+postgres=# 
+3. 
+3. Membuat Database
+Membuat database, user, dan memberikan hak akses database kepada user.
+
+CREATE USER namauser WITH PASSWORD 'password';
+CREATE DATABASE namadb;
+GRANT ALL PRIVILEGES ON DATABASE namadb TO namauser;
+\q 
+4. Membuat User Baru
+Login ke psql dengan user postgres dan buat user baru.
+
+sudo -u postgres createuser --interactive 
+Hasil dari perintah di atas.
+
+Enter name of role to add: musaamin
+Shall the new role be a superuser? (y/n) y
+Ketika menjalankan psql, sistem otentikasi PostgreSQL secara default akan menggunakan user sistem yang aktif sebagai user login ke psql, dan user tersebut harus memiliki database dengan nama yang sama dengan nama user.
+
+Misalnya, username yang saya gunakan adalah musaamin, berarti harus ada juga database dengan nama musaamin.
+
+Membuat database dengan nama musaamin.
+
+sudo -u postgres createdb musaamin 
+Tes login dengan bukan user postgres.
+
+psql 
+Hasil dari perintah di atas.
+
+psql (12.4 (Ubuntu 12.4-0ubuntu0.20.04.1))
+Type "help" for help.
+ 
+musaamin=# 
+Login ke psql dengan database lain.
+
+psql -d namadatabase 
+Cek koneksi yang sedang aktif untuk menampilkan nama database dan user.
+
+\conninfo 
+Hasil perintah di atas.
+
+Setting up pgAdmin 4 in web mode on a Debian platform...
+Creating configuration database...
+NOTE: Configuring authentiction for SERVER mode.
+ 
+Enter the email address and password to use for the initial pgAdmin user account:
+ 
+Email address: musaamin@localhost.lan
+Password:
+Retype password:
+pgAdmin 4 - Application Initialisation
+======================================
+ 
+Creating storage and log directories...
+We can now configure the Apache Web server for you. This involves enabling the wsgi module and configuring the pgAdmin 4 application to mount at /pgadmin4. Do you wish to continue (y/n)? y
+The Apache web server is running and must be restarted for the pgAdmin 4 installation to complete. Continue (y/n)? y
+Apache successfully restarted. You can now start using pgAdmin 4 in web mode at http://127.0.0.1/pgadmin4 
